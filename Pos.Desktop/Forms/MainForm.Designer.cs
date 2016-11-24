@@ -83,6 +83,7 @@
             this.menuNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.descriptionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Stock = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuCardBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tabPageTables = new System.Windows.Forms.TabPage();
             this.label2 = new System.Windows.Forms.Label();
@@ -161,6 +162,7 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(897, 446);
             this.tabControl1.TabIndex = 1;
+            this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
             // 
             // tabPageKassa
             // 
@@ -693,7 +695,8 @@
             this.menuGroupDataGridViewTextBoxColumn,
             this.menuNameDataGridViewTextBoxColumn,
             this.descriptionDataGridViewTextBoxColumn,
-            this.priceDataGridViewTextBoxColumn});
+            this.priceDataGridViewTextBoxColumn,
+            this.Stock});
             this.dataGridMenus.DataSource = this.menuCardBindingSource;
             this.dataGridMenus.Location = new System.Drawing.Point(0, 88);
             this.dataGridMenus.MultiSelect = false;
@@ -745,6 +748,13 @@
             this.priceDataGridViewTextBoxColumn.Name = "priceDataGridViewTextBoxColumn";
             this.priceDataGridViewTextBoxColumn.ReadOnly = true;
             this.priceDataGridViewTextBoxColumn.Width = 150;
+            // 
+            // Stock
+            // 
+            this.Stock.DataPropertyName = "Stock";
+            this.Stock.HeaderText = "Stock";
+            this.Stock.Name = "Stock";
+            this.Stock.ReadOnly = true;
             // 
             // menuCardBindingSource
             // 
@@ -949,11 +959,6 @@
         private System.Windows.Forms.DataGridView dataGridMenus;
         private System.Windows.Forms.BindingSource menuCardBindingSource;
         private System.Windows.Forms.BindingSource menuGroupBindingSource;
-        private System.Windows.Forms.DataGridViewTextBoxColumn numberDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn menuGroupDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn menuNameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn priceDataGridViewTextBoxColumn;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cboFilter;
         private System.Windows.Forms.Button btnPrintTables;
@@ -983,5 +988,11 @@
         private System.Windows.Forms.Button btnTidy;
         private System.Windows.Forms.Button btnDeleteOrder;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn numberDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn menuGroupDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn menuNameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn priceDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Stock;
     }
 }

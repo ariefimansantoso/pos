@@ -1,17 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="POS" Class="POSDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=ARIEFIMANSANTOS;Initial Catalog=POS;Persist Security Info=True;User ID=sa" SettingsObjectName="Pos.Desktop.Properties.Settings" SettingsPropertyName="POSConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.MenuCard" Member="MenuCards">
-    <Type Name="MenuCard">
-      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="MenuGroupId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Number" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="MenuName" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
-      <Column Name="Description" Type="System.String" DbType="NText NOT NULL" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="Price" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Association Name="MenuCard_OrderDetail" Member="OrderDetails" ThisKey="id" OtherKey="MenuCardID" Type="OrderDetail" />
-      <Association Name="MenuGroup_MenuCard" Member="MenuGroup" ThisKey="MenuGroupId" OtherKey="id" Type="MenuGroup" IsForeignKey="true" />
-    </Type>
-  </Table>
+  <Connection Mode="AppSettings" ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=POS;Persist Security Info=True;User ID=sa" SettingsObjectName="Pos.Desktop.Properties.Settings" SettingsPropertyName="POSConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.TableSeat" Member="TableSeats">
     <Type Name="TableSeat">
       <Column Name="TableID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -41,8 +29,8 @@
       <Column Name="CustomMenuName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="CustomMenuPrice" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
       <Column Name="Remarks" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Association Name="MenuCard_OrderDetail" Member="MenuCard" ThisKey="MenuCardID" OtherKey="id" Type="MenuCard" IsForeignKey="true" />
       <Association Name="OrderKassa_OrderDetail" Member="OrderKassa" ThisKey="OrderID" OtherKey="OrderID" Type="OrderKassa" IsForeignKey="true" />
+      <Association Name="MenuCard_OrderDetail" Member="MenuCard" ThisKey="MenuCardID" OtherKey="id" Type="MenuCard" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Picture" Member="Pictures">
@@ -99,7 +87,52 @@
       <Column Name="Name" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
       <Column Name="Discount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="OrderKassa_OrderDetail" Member="OrderDetails" ThisKey="OrderID" OtherKey="OrderID" Type="OrderDetail" />
+      <Association Name="OrderKassa_CustomerOrder" Member="CustomerOrders" ThisKey="OrderID" OtherKey="OrderID" Type="CustomerOrder" />
       <Association Name="TableSeat_OrderKassa" Member="TableSeat" ThisKey="TableID" OtherKey="TableID" Type="TableSeat" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MenuCard" Member="MenuCards">
+    <Type Name="MenuCard">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MenuGroupId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Number" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MenuName" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NText NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Price" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Points" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Stock" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="MenuCard_OrderDetail" Member="OrderDetails" ThisKey="id" OtherKey="MenuCardID" Type="OrderDetail" />
+      <Association Name="MenuGroup_MenuCard" Member="MenuGroup" ThisKey="MenuGroupId" OtherKey="id" Type="MenuGroup" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CustomerOrder" Member="CustomerOrders">
+    <Type Name="CustomerOrder">
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CustomerID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="OrderID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="OrderKassa_CustomerOrder" Member="OrderKassa" ThisKey="OrderID" OtherKey="OrderID" Type="OrderKassa" IsForeignKey="true" />
+      <Association Name="Customer_CustomerOrder" Member="Customer" ThisKey="CustomerID" OtherKey="ID" Type="Customer" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Customer" Member="Customers">
+    <Type Name="Customer">
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CustomerName" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerPhone" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerEmail" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerAddress" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="CustomerCity" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="CustomerKelurahan" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="CustomerKecamatan" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="CustomerPostcode" Type="System.String" DbType="NVarChar(5)" CanBeNull="true" />
+      <Column Name="PasswordSalt" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="PasswordEncrypted" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="DateUpdated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Deleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerPoints" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TwoFactorAuthEnabled" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Customer_CustomerOrder" Member="CustomerOrders" ThisKey="ID" OtherKey="CustomerID" Type="CustomerOrder" />
     </Type>
   </Table>
 </Database>

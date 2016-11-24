@@ -52,21 +52,31 @@ namespace Pos.Desktop.Forms
                 foreach (var table in tables)
                 {
                     TableUserControl uc = new TableUserControl();
-                    uc.LabelControl.MouseClick += new MouseEventHandler(LabelControl_MouseClick);                   
+
+                    uc.LabelControl.MouseClick += new MouseEventHandler(LabelControl_MouseClick);  
+                                     
                     var orderName = Helper.GetOrderName(db, table.TableID);
+
                     if(!string.IsNullOrEmpty(orderName))
                         uc.TableControlTitle = string.Format("{0}: {1}", table.TableName, orderName);
+
                     else uc.TableControlTitle = table.TableName;
+
                     uc.LabelControl.Tag = table;
+
                     panelKassa.Controls.Add(uc);
+
                     if (index == 0)
                         uc.Left = 5;
                     else
                         uc.Left = 5 + (index * 210);
+
                     uc.ConfigureBackground(table.TableStatus);
 
                     uc.Top = 10 + (row * 90);
+
                     index++;
+
                     if ((index + 1) > totalRowTable)
                     {
                         index = 0;
@@ -682,6 +692,21 @@ namespace Pos.Desktop.Forms
                 btnDeleteOrder.Visible = false;
                 btnTidy.Visible = false;
             }
+        }
+
+        private void tabControl1_Selected(object sender, TabControlEventArgs e)
+        {
+            switch (e.TabPage.Name)
+            {
+                case "":
+                    break;
+                
+                case "tabPageMenus": // menu
+                    menuCardBindingSource.ResetBindings(true);
+                    break;
+               
+            }
+                
         }
     }
 }

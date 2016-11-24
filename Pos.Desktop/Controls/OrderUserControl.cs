@@ -29,8 +29,6 @@ namespace Pos.Desktop.Controls
                 BackToTablesHandler(this, e);
         }
 
-
-
         private void Initialize()
         {
             //PopulateMenus();
@@ -82,11 +80,30 @@ namespace Pos.Desktop.Controls
         {
             int id = ((OrderDetail)e.Id).MenuCardID;
             string name = ((OrderDetail)e.Id).CustomMenuName.Trim();
-            if (!string.IsNullOrEmpty(name))
+            if (!string.IsNullOrEmpty(name) || id != 1124)
             {
                 var item = from a in ctx.OrderDetails
                            where a.MenuCardID == id && a.OrderID == _currentOrderId
                            select a;
+                if (item.Count() > 0)
+                {
+                    var deletedItem = item.ToArray()[0];
+                    var qty = deletedItem.Quantity;
+                    var menuCardToUpdate = Helper.GetMenuCard(id);
+
+                    UpdateMenuCard(id, menuCardToUpdate.Stock.Value + qty);
+                    
+                    ctx.OrderDetails.DeleteOnSubmit(deletedItem);
+                    ctx.SubmitChanges();
+
+                    OrderDetailPopulate(_currentOrderId);
+                }
+            }
+            else               
+            {                    
+                var item = from a in ctx.OrderDetails
+                            where a.CustomMenuName.Trim() == name && a.OrderID == _currentOrderId
+                            select a;
                 if (item.Count() > 0)
                 {
                     var deletedItem = item.ToArray()[0];
@@ -96,30 +113,18 @@ namespace Pos.Desktop.Controls
                     OrderDetailPopulate(_currentOrderId);
                 }
             }
-            else               
-                {                    
-                    var item = from a in ctx.OrderDetails
-                               where a.CustomMenuName.Trim() == name && a.OrderID == _currentOrderId
-                               select a;
-                    if (item.Count() > 0)
-                    {
-                        var deletedItem = item.ToArray()[0];
-                        ctx.OrderDetails.DeleteOnSubmit(deletedItem);
-                        ctx.SubmitChanges();
-
-                        OrderDetailPopulate(_currentOrderId);
-                    }
-                }
             
         }
 
         private void OrderDetailPopulate(int orderId)
         {
+            POSDataContext db = new POSDataContext();
             panelRightContent.Controls.Clear();
             int index = 0;
-            var details = from a in ctx.OrderDetails
+            var details = from a in db.OrderDetails
                           where a.OrderID == orderId
                           select a;
+
             decimal totalAll = 0;
             foreach (var detail in details)
             {
@@ -157,6 +162,7 @@ namespace Pos.Desktop.Controls
             }
             lbTotal.Text = "Rp. " + totalAll.ToString("N0");
         }
+
         private void Recalculate()
         {
             decimal totalAll = 0;
@@ -171,15 +177,23 @@ namespace Pos.Desktop.Controls
         public void PopulateMenus()
         {
             Initialize();
+
+            PopulateMenuCard();
+        }
+
+        private void PopulateMenuCard()
+        {
+            POSDataContext posDb = new POSDataContext();
+            panelLeft.Controls.Clear();
             this.lbTableTitle.Text = SelectedTable.TableName;
-            int length = this.Width-560;            
+            int length = this.Width - 560;
             int totalPerRow = 5;
             if (length <= 1024)
                 totalPerRow = 4;
 
-            var menus = ctx.MenuCards.Where(x => x.id != 1124).OrderBy(m => m.MenuGroupId);
+            var menus = posDb.MenuCards.Where(x => x.id != 1124).OrderBy(m => m.MenuGroupId);
             Dictionary<int, Color> colorKey = new Dictionary<int, Color>();
-            Color[] colors = new Color[] { Color.Blue, Color.Green, 
+            Color[] colors = new Color[] { Color.Blue, Color.Green,
                     Color.Yellow, Color.Pink, Color.BlueViolet, Color.DarkRed,
                     Color.Aqua,Color.GreenYellow,Color.Cyan};
             int index = 0;
@@ -203,8 +217,12 @@ namespace Pos.Desktop.Controls
                     uc.BackColor = colorKey[menu.MenuGroupId];
                 else
                     uc.BackColor = Color.DarkSalmon;
-                uc.TableControlTitle = menu.MenuName;
+
+                var menuLabel = menu.MenuName + (menu.Stock.HasValue ? "(" + menu.Stock.Value.ToString() + ")" : " (0)");
+
+                uc.TableControlTitle = menuLabel;
                 uc.LabelControl.Tag = menu;
+                uc.Name = "Menu" + menu.id.ToString();
                 panelLeft.Controls.Add(uc);
                 if (index == 0)
                     uc.Left = 5;
@@ -223,7 +241,23 @@ namespace Pos.Desktop.Controls
 
         private void LabelControl_MouseClick(object sender, MouseEventArgs e)
         {
-            MenuCard menu = (MenuCard)((Label)sender).Tag;
+            POSDataContext posDb = new POSDataContext();
+            MenuCard menu = Helper.GetMenuCard(((MenuCard)((Label)sender).Tag).id);
+
+            if(menu.Stock.HasValue)
+            {
+                if(menu.Stock.Value <= 0)
+                {
+                    MessageBox.Show("Stok Habis!!!");
+                    return;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Stok Habis!!!");
+                return;
+            }
+
             if (!panelRightContent.Controls.ContainsKey(menu.id.ToString()))
             {
                 OrderDetail orderDetail = new OrderDetail();
@@ -234,8 +268,8 @@ namespace Pos.Desktop.Controls
                 orderDetail.CustomMenuName = string.Empty;
                 orderDetail.CustomMenuPrice = 0;
 
-                ctx.OrderDetails.InsertOnSubmit(orderDetail);
-                ctx.SubmitChanges();
+                posDb.OrderDetails.InsertOnSubmit(orderDetail);
+                posDb.SubmitChanges();
 
                 ItemRowUserControl row = new ItemRowUserControl();
                 row.Name = menu.id.ToString();
@@ -261,19 +295,36 @@ namespace Pos.Desktop.Controls
             }
             else
             {
-                var item = from a in ctx.OrderDetails
+                var item = from a in posDb.OrderDetails
                            where a.MenuCardID == menu.id && a.OrderID == _currentOrderId
                            select a;
                 if (item.Count() > 0)
                 {
                     var orderDetail = item.ToArray()[0];
                     orderDetail.Quantity = orderDetail.Quantity + 1;
-                    ctx.SubmitChanges();
+                    posDb.SubmitChanges();
 
                     ((ItemRowUserControl)panelRightContent.Controls[menu.id.ToString()]).Quantity = orderDetail.Quantity.ToString();
                     ((ItemRowUserControl)panelRightContent.Controls[menu.id.ToString()]).OrderDetailSelected = orderDetail;
                 }
             }
+
+            var stock = menu.Stock.HasValue ? (menu.Stock.Value - 1) : 0;
+            
+            UpdateMenuCard(menu.id, stock);
+        }
+
+        private void UpdateMenuCard(int menuId, int newStock)
+        {
+            var updatedMenu = Helper.UpdateMenuStock(menuId, newStock);
+
+            var menuCard = panelLeft.Controls.Find("Menu" + menuId.ToString(), true)[0] as MenuUserControl;
+
+            var menuLabel = updatedMenu.MenuName + (updatedMenu.Stock.HasValue ? "(" + newStock + ")" : " (0)");
+
+            menuCard.Tag = updatedMenu;
+
+            menuCard.TableControlTitle = menuLabel;
         }
 
         private void row_RecalculateTotalHandler(object sender, EventArgs e)

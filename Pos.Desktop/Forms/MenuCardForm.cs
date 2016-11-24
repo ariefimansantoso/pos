@@ -29,6 +29,7 @@ namespace Pos.Desktop.Forms
                 txtName.Text = SelectedMenu.MenuName;
                 txtNum.Text = SelectedMenu.Number.ToString();
                 txtPrice.Text = SelectedMenu.Price.ToString("00.00");
+                txtStock.Text = SelectedMenu.Stock.HasValue ? SelectedMenu.Stock.Value.ToString() : "0";
             }
         }
 
@@ -63,10 +64,17 @@ namespace Pos.Desktop.Forms
             menu.MenuGroup = context.MenuGroups.First(x => x.id == (int)cboGroup.SelectedValue);
             menu.MenuGroupId = (int)cboGroup.SelectedValue;
             menu.MenuName = txtName.Text;
+
             if (!string.IsNullOrEmpty(txtNum.Text))
                 menu.Number = Convert.ToInt32(txtNum.Text);
             else
                 menu.Number = null;
+
+            if (!string.IsNullOrEmpty(txtStock.Text))
+                menu.Stock = Convert.ToInt32(txtStock.Text);
+            else
+                menu.Number = null;
+
             try
             {
                 if (!string.IsNullOrEmpty(txtPrice.Text))

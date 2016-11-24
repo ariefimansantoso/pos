@@ -43,6 +43,8 @@
             this.label6 = new System.Windows.Forms.Label();
             this.txtPrice = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtStock = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.menuGroupBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,7 +52,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(20, 302);
+            this.label4.Location = new System.Drawing.Point(22, 362);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(112, 24);
             this.label4.TabIndex = 19;
@@ -59,7 +61,7 @@
             // btnCancel
             // 
             this.btnCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.btnCancel.Location = new System.Drawing.Point(318, 295);
+            this.btnCancel.Location = new System.Drawing.Point(304, 355);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(105, 40);
             this.btnCancel.TabIndex = 6;
@@ -70,7 +72,7 @@
             // btnInsert
             // 
             this.btnInsert.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.btnInsert.Location = new System.Drawing.Point(191, 295);
+            this.btnInsert.Location = new System.Drawing.Point(193, 355);
             this.btnInsert.Name = "btnInsert";
             this.btnInsert.Size = new System.Drawing.Size(105, 40);
             this.btnInsert.TabIndex = 5;
@@ -180,11 +182,31 @@
             this.label7.TabIndex = 24;
             this.label7.Text = "Price:";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(22, 286);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(61, 24);
+            this.label3.TabIndex = 25;
+            this.label3.Text = "Stock:";
+            // 
+            // txtStock
+            // 
+            this.txtStock.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtStock.Location = new System.Drawing.Point(193, 283);
+            this.txtStock.Name = "txtStock";
+            this.txtStock.Size = new System.Drawing.Size(119, 29);
+            this.txtStock.TabIndex = 26;
+            // 
             // MenuCardForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(509, 384);
+            this.ClientSize = new System.Drawing.Size(509, 407);
+            this.Controls.Add(this.txtStock);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.txtPrice);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.txtDes);
@@ -227,5 +249,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtPrice;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtStock;
     }
 }

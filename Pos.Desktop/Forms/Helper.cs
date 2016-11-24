@@ -582,5 +582,25 @@ namespace Pos.Desktop.Forms
                 return order.Name;
             return string.Empty;
         }
+
+        public static MenuCard UpdateMenuStock(int menuId, int updateValue)
+        {
+            POSDataContext db = new POSDataContext();
+
+            var menuToUpdate = db.MenuCards.FirstOrDefault(x => x.id == menuId);
+
+            menuToUpdate.Stock = updateValue;
+
+            db.SubmitChanges();
+
+            return menuToUpdate;
+        }
+
+        public static MenuCard GetMenuCard(int menuId)
+        {
+            POSDataContext db = new POSDataContext();
+
+            return db.MenuCards.FirstOrDefault(x => x.id == menuId);
+        }
     }
 }
