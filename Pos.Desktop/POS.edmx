@@ -1,0 +1,594 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="POSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="MenuCard">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MenuGroupId" Type="int" Nullable="false" />
+          <Property Name="Number" Type="int" />
+          <Property Name="MenuName" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Description" Type="ntext" Nullable="false" />
+          <Property Name="Price" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MenuGroup">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="ParentId" Type="int" Nullable="false" />
+          <Property Name="GroupName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderDate" Type="datetime" Nullable="false" />
+          <Property Name="OrderTotal" Type="money" Nullable="false" />
+          <Property Name="Remarks" Type="ntext" Nullable="false" />
+          <Property Name="IsComplete" Type="bit" Nullable="false" />
+          <Property Name="CompletedDate" Type="datetime" Nullable="false" />
+          <Property Name="TableID" Type="int" Nullable="false" />
+          <Property Name="OrderNumber" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="OrderDetailID" />
+          </Key>
+          <Property Name="OrderDetailID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderID" Type="int" Nullable="false" />
+          <Property Name="MenuCardID" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="CustomMenuName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CustomMenuPrice" Type="money" Nullable="false" />
+          <Property Name="Remarks" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'POS.dbo.Picture' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Picture">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="GroupId" />
+            <PropertyRef Name="Filename" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="GroupId" Type="int" Nullable="false" />
+          <Property Name="Filename" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'POS.dbo.PictureGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="PictureGroup">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="GroupName" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="GroupName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reservation">
+          <Key>
+            <PropertyRef Name="ReservationID" />
+          </Key>
+          <Property Name="ReservationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReservationDateTime" Type="datetime" Nullable="false" />
+          <Property Name="GuestName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="GuestPhone" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Remarks" Type="ntext" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ReservationTable">
+          <Key>
+            <PropertyRef Name="ReservationTableID" />
+          </Key>
+          <Property Name="ReservationTableID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReservationID" Type="int" Nullable="false" />
+          <Property Name="TableID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SystemLog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LogType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LogDateTime" Type="datetime" Nullable="false" />
+          <Property Name="LogDesc" Type="ntext" Nullable="false" />
+          <Property Name="LogUser" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TableSeat">
+          <Key>
+            <PropertyRef Name="TableID" />
+          </Key>
+          <Property Name="TableID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TableNumber" Type="int" Nullable="false" />
+          <Property Name="TableType" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="TableStatus" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="TableName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_MenuCard_MenuGroup">
+          <End Role="MenuGroup" Type="Self.MenuGroup" Multiplicity="1" />
+          <End Role="MenuCard" Type="Self.MenuCard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MenuGroup">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MenuCard">
+              <PropertyRef Name="MenuGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_TableSeat">
+          <End Role="TableSeat" Type="Self.TableSeat" Multiplicity="1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TableSeat">
+              <PropertyRef Name="TableID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="TableID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetail_MenuCard">
+          <End Role="MenuCard" Type="Self.MenuCard" Multiplicity="1" />
+          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MenuCard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="MenuCardID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetail_Order">
+          <End Role="Order" Type="Self.Order" Multiplicity="1" />
+          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReservationTable_Reservation">
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="1" />
+          <End Role="ReservationTable" Type="Self.ReservationTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reservation">
+              <PropertyRef Name="ReservationID" />
+            </Principal>
+            <Dependent Role="ReservationTable">
+              <PropertyRef Name="ReservationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReservationTable_TableSeat">
+          <End Role="TableSeat" Type="Self.TableSeat" Multiplicity="1" />
+          <End Role="ReservationTable" Type="Self.ReservationTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TableSeat">
+              <PropertyRef Name="TableID" />
+            </Principal>
+            <Dependent Role="ReservationTable">
+              <PropertyRef Name="TableID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="POSModelStoreContainer">
+          <EntitySet Name="MenuCard" EntityType="Self.MenuCard" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MenuGroup" EntityType="Self.MenuGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderDetail" EntityType="Self.OrderDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reservation" EntityType="Self.Reservation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReservationTable" EntityType="Self.ReservationTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SystemLog" EntityType="Self.SystemLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TableSeat" EntityType="Self.TableSeat" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Picture" EntityType="Self.Picture" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Picture].[id] AS [id], 
+    [Picture].[GroupId] AS [GroupId], 
+    [Picture].[Filename] AS [Filename]
+    FROM [dbo].[Picture] AS [Picture]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="PictureGroup" EntityType="Self.PictureGroup" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [PictureGroup].[id] AS [id], 
+    [PictureGroup].[GroupName] AS [GroupName]
+    FROM [dbo].[PictureGroup] AS [PictureGroup]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_MenuCard_MenuGroup" Association="Self.FK_MenuCard_MenuGroup">
+            <End Role="MenuGroup" EntitySet="MenuGroup" />
+            <End Role="MenuCard" EntitySet="MenuCard" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_TableSeat" Association="Self.FK_Order_TableSeat">
+            <End Role="TableSeat" EntitySet="TableSeat" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetail_MenuCard" Association="Self.FK_OrderDetail_MenuCard">
+            <End Role="MenuCard" EntitySet="MenuCard" />
+            <End Role="OrderDetail" EntitySet="OrderDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetail_Order" Association="Self.FK_OrderDetail_Order">
+            <End Role="Order" EntitySet="Order" />
+            <End Role="OrderDetail" EntitySet="OrderDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReservationTable_Reservation" Association="Self.FK_ReservationTable_Reservation">
+            <End Role="Reservation" EntitySet="Reservation" />
+            <End Role="ReservationTable" EntitySet="ReservationTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReservationTable_TableSeat" Association="Self.FK_ReservationTable_TableSeat">
+            <End Role="TableSeat" EntitySet="TableSeat" />
+            <End Role="ReservationTable" EntitySet="ReservationTable" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="POSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="POSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="MenuCard" EntityType="POSModel.MenuCard" />
+          <EntitySet Name="MenuGroup" EntityType="POSModel.MenuGroup" />
+          <EntitySet Name="OrderKassa" EntityType="POSModel.OrderKassa" />
+          <EntitySet Name="OrderDetail" EntityType="POSModel.OrderDetail" />
+          <EntitySet Name="Reservation" EntityType="POSModel.Reservation" />
+          <EntitySet Name="ReservationTable" EntityType="POSModel.ReservationTable" />
+          <EntitySet Name="SystemLog" EntityType="POSModel.SystemLog" />
+          <EntitySet Name="TableSeat" EntityType="POSModel.TableSeat" />
+          <EntitySet Name="Picture" EntityType="POSModel.Picture" />
+          <EntitySet Name="PictureGroup" EntityType="POSModel.PictureGroup" />
+          <AssociationSet Name="FK_MenuCard_MenuGroup" Association="POSModel.FK_MenuCard_MenuGroup">
+            <End Role="MenuGroup" EntitySet="MenuGroup" />
+            <End Role="MenuCard" EntitySet="MenuCard" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetail_MenuCard" Association="POSModel.FK_OrderDetail_MenuCard">
+            <End Role="MenuCard" EntitySet="MenuCard" />
+            <End Role="OrderDetail" EntitySet="OrderDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_TableSeat" Association="POSModel.FK_Order_TableSeat">
+            <End Role="TableSeat" EntitySet="TableSeat" />
+            <End Role="Order" EntitySet="OrderKassa" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetail_Order" Association="POSModel.FK_OrderDetail_Order">
+            <End Role="Order" EntitySet="OrderKassa" />
+            <End Role="OrderDetail" EntitySet="OrderDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReservationTable_Reservation" Association="POSModel.FK_ReservationTable_Reservation">
+            <End Role="Reservation" EntitySet="Reservation" />
+            <End Role="ReservationTable" EntitySet="ReservationTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReservationTable_TableSeat" Association="POSModel.FK_ReservationTable_TableSeat">
+            <End Role="TableSeat" EntitySet="TableSeat" />
+            <End Role="ReservationTable" EntitySet="ReservationTable" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="MenuCard">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MenuGroupId" Type="Int32" Nullable="false" />
+          <Property Name="Number" Type="Int32" />
+          <Property Name="MenuName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <NavigationProperty Name="MenuGroup" Relationship="POSModel.FK_MenuCard_MenuGroup" FromRole="MenuCard" ToRole="MenuGroup" />
+          <NavigationProperty Name="OrderDetail" Relationship="POSModel.FK_OrderDetail_MenuCard" FromRole="MenuCard" ToRole="OrderDetail" />
+        </EntityType>
+        <EntityType Name="MenuGroup">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="ParentId" Type="Int32" Nullable="false" />
+          <Property Name="GroupName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MenuCard" Relationship="POSModel.FK_MenuCard_MenuGroup" FromRole="MenuGroup" ToRole="MenuCard" />
+        </EntityType>
+        <EntityType Name="OrderKassa">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="OrderTotal" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Remarks" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsComplete" Type="Boolean" Nullable="false" />
+          <Property Name="CompletedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TableID" Type="Int32" Nullable="false" />
+          <Property Name="OrderNumber" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TableSeat" Relationship="POSModel.FK_Order_TableSeat" FromRole="Order" ToRole="TableSeat" />
+          <NavigationProperty Name="OrderDetail" Relationship="POSModel.FK_OrderDetail_Order" FromRole="Order" ToRole="OrderDetail" />
+        </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="OrderDetailID" />
+          </Key>
+          <Property Name="OrderDetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderID" Type="Int32" Nullable="false" />
+          <Property Name="MenuCardID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="CustomMenuName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CustomMenuPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Remarks" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MenuCard" Relationship="POSModel.FK_OrderDetail_MenuCard" FromRole="OrderDetail" ToRole="MenuCard" />
+          <NavigationProperty Name="Order" Relationship="POSModel.FK_OrderDetail_Order" FromRole="OrderDetail" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="Reservation">
+          <Key>
+            <PropertyRef Name="ReservationID" />
+          </Key>
+          <Property Name="ReservationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReservationDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="GuestName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GuestPhone" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Remarks" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ReservationTable" Relationship="POSModel.FK_ReservationTable_Reservation" FromRole="Reservation" ToRole="ReservationTable" />
+        </EntityType>
+        <EntityType Name="ReservationTable">
+          <Key>
+            <PropertyRef Name="ReservationTableID" />
+          </Key>
+          <Property Name="ReservationTableID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReservationID" Type="Int32" Nullable="false" />
+          <Property Name="TableID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Reservation" Relationship="POSModel.FK_ReservationTable_Reservation" FromRole="ReservationTable" ToRole="Reservation" />
+          <NavigationProperty Name="TableSeat" Relationship="POSModel.FK_ReservationTable_TableSeat" FromRole="ReservationTable" ToRole="TableSeat" />
+        </EntityType>
+        <EntityType Name="SystemLog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LogType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LogDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LogDesc" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LogUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TableSeat">
+          <Key>
+            <PropertyRef Name="TableID" />
+          </Key>
+          <Property Name="TableID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TableNumber" Type="Int32" Nullable="false" />
+          <Property Name="TableType" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TableStatus" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TableName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsDelete" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Order" Relationship="POSModel.FK_Order_TableSeat" FromRole="TableSeat" ToRole="Order" />
+          <NavigationProperty Name="ReservationTable" Relationship="POSModel.FK_ReservationTable_TableSeat" FromRole="TableSeat" ToRole="ReservationTable" />
+        </EntityType>
+        <EntityType Name="Picture">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="GroupId" />
+            <PropertyRef Name="Filename" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="GroupId" Type="Int32" Nullable="false" />
+          <Property Name="Filename" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PictureGroup">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="GroupName" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="GroupName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_MenuCard_MenuGroup">
+          <End Type="POSModel.MenuGroup" Role="MenuGroup" Multiplicity="1" />
+          <End Type="POSModel.MenuCard" Role="MenuCard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MenuGroup">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MenuCard">
+              <PropertyRef Name="MenuGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetail_MenuCard">
+          <End Type="POSModel.MenuCard" Role="MenuCard" Multiplicity="1" />
+          <End Type="POSModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MenuCard">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="MenuCardID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_TableSeat">
+          <End Type="POSModel.TableSeat" Role="TableSeat" Multiplicity="1" />
+          <End Type="POSModel.OrderKassa" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TableSeat">
+              <PropertyRef Name="TableID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="TableID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetail_Order">
+          <End Type="POSModel.OrderKassa" Role="Order" Multiplicity="1" />
+          <End Type="POSModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReservationTable_Reservation">
+          <End Type="POSModel.Reservation" Role="Reservation" Multiplicity="1" />
+          <End Type="POSModel.ReservationTable" Role="ReservationTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reservation">
+              <PropertyRef Name="ReservationID" />
+            </Principal>
+            <Dependent Role="ReservationTable">
+              <PropertyRef Name="ReservationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReservationTable_TableSeat">
+          <End Type="POSModel.TableSeat" Role="TableSeat" Multiplicity="1" />
+          <End Type="POSModel.ReservationTable" Role="ReservationTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TableSeat">
+              <PropertyRef Name="TableID" />
+            </Principal>
+            <Dependent Role="ReservationTable">
+              <PropertyRef Name="TableID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="POSModelStoreContainer" CdmEntityContainer="POSEntities">
+          <EntitySetMapping Name="MenuCard">
+            <EntityTypeMapping TypeName="POSModel.MenuCard">
+              <MappingFragment StoreEntitySet="MenuCard">
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="MenuName" ColumnName="MenuName" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="MenuGroupId" ColumnName="MenuGroupId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MenuGroup">
+            <EntityTypeMapping TypeName="POSModel.MenuGroup">
+              <MappingFragment StoreEntitySet="MenuGroup">
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderKassa">
+            <EntityTypeMapping TypeName="POSModel.OrderKassa">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+                <ScalarProperty Name="TableID" ColumnName="TableID" />
+                <ScalarProperty Name="CompletedDate" ColumnName="CompletedDate" />
+                <ScalarProperty Name="IsComplete" ColumnName="IsComplete" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="OrderTotal" ColumnName="OrderTotal" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderDetail">
+            <EntityTypeMapping TypeName="POSModel.OrderDetail">
+              <MappingFragment StoreEntitySet="OrderDetail">
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="CustomMenuPrice" ColumnName="CustomMenuPrice" />
+                <ScalarProperty Name="CustomMenuName" ColumnName="CustomMenuName" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="MenuCardID" ColumnName="MenuCardID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="OrderDetailID" ColumnName="OrderDetailID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reservation">
+            <EntityTypeMapping TypeName="POSModel.Reservation">
+              <MappingFragment StoreEntitySet="Reservation">
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="GuestPhone" ColumnName="GuestPhone" />
+                <ScalarProperty Name="GuestName" ColumnName="GuestName" />
+                <ScalarProperty Name="ReservationDateTime" ColumnName="ReservationDateTime" />
+                <ScalarProperty Name="ReservationID" ColumnName="ReservationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReservationTable">
+            <EntityTypeMapping TypeName="POSModel.ReservationTable">
+              <MappingFragment StoreEntitySet="ReservationTable">
+                <ScalarProperty Name="TableID" ColumnName="TableID" />
+                <ScalarProperty Name="ReservationID" ColumnName="ReservationID" />
+                <ScalarProperty Name="ReservationTableID" ColumnName="ReservationTableID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SystemLog">
+            <EntityTypeMapping TypeName="POSModel.SystemLog">
+              <MappingFragment StoreEntitySet="SystemLog">
+                <ScalarProperty Name="LogUser" ColumnName="LogUser" />
+                <ScalarProperty Name="LogDesc" ColumnName="LogDesc" />
+                <ScalarProperty Name="LogDateTime" ColumnName="LogDateTime" />
+                <ScalarProperty Name="LogType" ColumnName="LogType" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TableSeat">
+            <EntityTypeMapping TypeName="POSModel.TableSeat">
+              <MappingFragment StoreEntitySet="TableSeat">
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="TableName" ColumnName="TableName" />
+                <ScalarProperty Name="TableStatus" ColumnName="TableStatus" />
+                <ScalarProperty Name="TableType" ColumnName="TableType" />
+                <ScalarProperty Name="TableNumber" ColumnName="TableNumber" />
+                <ScalarProperty Name="TableID" ColumnName="TableID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Picture">
+            <EntityTypeMapping TypeName="POSModel.Picture">
+              <MappingFragment StoreEntitySet="Picture">
+                <ScalarProperty Name="Filename" ColumnName="Filename" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PictureGroup">
+            <EntityTypeMapping TypeName="POSModel.PictureGroup">
+              <MappingFragment StoreEntitySet="PictureGroup">
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

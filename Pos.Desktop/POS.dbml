@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="POS" Class="POSDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=ARIEFIMANSANTOS;Initial Catalog=POS;Persist Security Info=True;User ID=sa" SettingsObjectName="Pos.Desktop.Properties.Settings" SettingsPropertyName="POSConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.MenuCard" Member="MenuCards">
+    <Type Name="MenuCard">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MenuGroupId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Number" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MenuName" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NText NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Price" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Association Name="MenuCard_OrderDetail" Member="OrderDetails" ThisKey="id" OtherKey="MenuCardID" Type="OrderDetail" />
+      <Association Name="MenuGroup_MenuCard" Member="MenuGroup" ThisKey="MenuGroupId" OtherKey="id" Type="MenuGroup" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TableSeat" Member="TableSeats">
+    <Type Name="TableSeat">
+      <Column Name="TableID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TableNumber" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TableType" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TableStatus" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TableName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="IsDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="TableSeat_ReservationTable" Member="ReservationTables" ThisKey="TableID" OtherKey="TableID" Type="ReservationTable" />
+      <Association Name="TableSeat_OrderKassa" Member="OrderKassas" ThisKey="TableID" OtherKey="TableID" Type="OrderKassa" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MenuGroup" Member="MenuGroups">
+    <Type Name="MenuGroup">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="GroupName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="MenuGroup_MenuCard" Member="MenuCards" ThisKey="id" OtherKey="MenuGroupId" Type="MenuCard" />
+    </Type>
+  </Table>
+  <Table Name="dbo.OrderDetail" Member="OrderDetails">
+    <Type Name="OrderDetail">
+      <Column Name="OrderDetailID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="OrderID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MenuCardID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Quantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomMenuName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="CustomMenuPrice" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Remarks" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="MenuCard_OrderDetail" Member="MenuCard" ThisKey="MenuCardID" OtherKey="id" Type="MenuCard" IsForeignKey="true" />
+      <Association Name="OrderKassa_OrderDetail" Member="OrderKassa" ThisKey="OrderID" OtherKey="OrderID" Type="OrderKassa" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Picture" Member="Pictures">
+    <Type Name="Picture">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="GroupId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Filename" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PictureGroup" Member="PictureGroups">
+    <Type Name="PictureGroup">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="GroupName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Reservation" Member="Reservations">
+    <Type Name="Reservation">
+      <Column Name="ReservationID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ReservationDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="GuestName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="GuestPhone" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Remarks" Type="System.String" DbType="NText NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Association Name="Reservation_ReservationTable" Member="ReservationTables" ThisKey="ReservationID" OtherKey="ReservationID" Type="ReservationTable" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ReservationTable" Member="ReservationTables">
+    <Type Name="ReservationTable">
+      <Column Name="ReservationTableID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ReservationID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TableID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Reservation_ReservationTable" Member="Reservation" ThisKey="ReservationID" OtherKey="ReservationID" Type="Reservation" IsForeignKey="true" />
+      <Association Name="TableSeat_ReservationTable" Member="TableSeat" ThisKey="TableID" OtherKey="TableID" Type="TableSeat" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SystemLog" Member="SystemLogs">
+    <Type Name="SystemLog">
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="LogType" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="LogDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LogDesc" Type="System.String" DbType="NText NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="LogUser" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[Order]" Member="OrderKassas">
+    <Type Name="OrderKassa">
+      <Column Name="OrderID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="OrderDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="OrderTotal" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Remarks" Type="System.String" DbType="NText NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="IsComplete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CompletedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="TableID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OrderNumber" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Discount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="OrderKassa_OrderDetail" Member="OrderDetails" ThisKey="OrderID" OtherKey="OrderID" Type="OrderDetail" />
+      <Association Name="TableSeat_OrderKassa" Member="TableSeat" ThisKey="TableID" OtherKey="TableID" Type="TableSeat" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

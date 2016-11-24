@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 11" name="POS">
+  <DataContextMoniker Name="/POSDataContext" />
+  <nestedChildShapes>
+    <classShape Id="5d8bd123-25f2-4492-a712-e8a908407ae5" absoluteBounds="3.5, 8.75, 2, 1.9631982421875005">
+      <DataClassMoniker Name="/POSDataContext/MenuCard" />
+      <nestedChildShapes>
+        <elementListCompartment Id="f530f7ba-0125-4cb3-8bcd-3185c0f48b79" absoluteBounds="3.515, 9.21, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="1cb854f2-5f28-42b8-a220-c84e8565c16e" absoluteBounds="0.75, 3.625, 2, 1.9631982421875005">
+      <DataClassMoniker Name="/POSDataContext/TableSeat" />
+      <nestedChildShapes>
+        <elementListCompartment Id="0f9e26d9-0f5e-470a-88fb-fbf954d832e1" absoluteBounds="0.765, 4.085, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="0cc4a349-1f07-41c4-8cc1-c94602509c53" absoluteBounds="0.75, 9.125, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/POSDataContext/MenuGroup" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5fffb2f1-0323-46a7-bb6c-7f1bebcbb8ef" absoluteBounds="0.765, 9.585, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="64d6d0c2-0b57-4005-8ed0-9beabb3c6c17" absoluteBounds="6.25, 5.75, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/POSDataContext/OrderDetail" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e82782c1-569f-4ccc-b1d7-b71e47e6bd00" absoluteBounds="6.265, 6.21, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="20146b7f-a73c-4f5a-abd0-52a8a7005939" absoluteBounds="6.75, 2.125, 2, 1.3862939453125">
+      <DataClassMoniker Name="/POSDataContext/Picture" />
+      <nestedChildShapes>
+        <elementListCompartment Id="072a8cb2-2fa1-460f-b9b8-7e838693584a" absoluteBounds="6.765, 2.585, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="fd6e809e-e665-4d40-92fc-4ed9d36f0a0b" absoluteBounds="6.75, 9.125, 2, 1.1939925130208344">
+      <DataClassMoniker Name="/POSDataContext/PictureGroup" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6f697719-a80e-48ba-bc78-0e9ebcacdddd" absoluteBounds="6.765, 9.585, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="29461a1b-c5b8-4c66-a138-45aaba78e220" absoluteBounds="0.75, 0.75, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/POSDataContext/Reservation" />
+      <nestedChildShapes>
+        <elementListCompartment Id="ddb9dd3a-1752-4eaa-b300-33ccb08857bd" absoluteBounds="0.765, 1.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="94794a4b-a1b1-40cc-9e67-ca182242c3e7" absoluteBounds="3.5, 3, 2, 1.3862939453125">
+      <DataClassMoniker Name="/POSDataContext/ReservationTable" />
+      <nestedChildShapes>
+        <elementListCompartment Id="9ba0b72e-bcd0-4c21-b559-7f0adf73911f" absoluteBounds="3.515, 3.46, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d5292e02-697b-4c4c-94f2-516cf603ad2b" absoluteBounds="8.75, 5.125, 2, 1.7708968098958327">
+      <DataClassMoniker Name="/POSDataContext/SystemLog" />
+      <nestedChildShapes>
+        <elementListCompartment Id="55bf41eb-6365-4d17-9784-a8e45832d7a1" absoluteBounds="8.765, 5.585, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.75 : 9.81814697265625); (3.5 : 9.81814697265625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/POSDataContext/MenuGroup/MenuGroup_MenuCard" />
+      <nodes>
+        <classShapeMoniker Id="0cc4a349-1f07-41c4-8cc1-c94602509c53" />
+        <classShapeMoniker Id="5d8bd123-25f2-4492-a712-e8a908407ae5" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 10.5473453776042); (6.46875 : 10.5473453776042); (6.46875 : 7.90549967447917)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/POSDataContext/MenuCard/MenuCard_OrderDetail" />
+      <nodes>
+        <classShapeMoniker Id="5d8bd123-25f2-4492-a712-e8a908407ae5" />
+        <classShapeMoniker Id="64d6d0c2-0b57-4005-8ed0-9beabb3c6c17" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 1.63544840494792); (4.5 : 1.63544840494792); (4.5 : 3)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/POSDataContext/Reservation/Reservation_ReservationTable" />
+      <nodes>
+        <classShapeMoniker Id="29461a1b-c5b8-4c66-a138-45aaba78e220" />
+        <classShapeMoniker Id="94794a4b-a1b1-40cc-9e67-ca182242c3e7" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 4.00564697265625); (3.5 : 4.00564697265625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/POSDataContext/TableSeat/TableSeat_ReservationTable" />
+      <nodes>
+        <classShapeMoniker Id="1cb854f2-5f28-42b8-a220-c84e8565c16e" />
+        <classShapeMoniker Id="94794a4b-a1b1-40cc-9e67-ca182242c3e7" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="46bd37d6-5c53-48bb-a18e-99986a107439" absoluteBounds="3.25, 5.5, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/POSDataContext/OrderKassa" />
+      <nestedChildShapes>
+        <elementListCompartment Id="785b2ecd-6626-4bad-a9e7-fa21c312104c" absoluteBounds="3.265, 5.96, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(5.25 : 6.82774983723958); (6.25 : 6.82774983723958)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/POSDataContext/OrderKassa/OrderKassa_OrderDetail" />
+      <nodes>
+        <classShapeMoniker Id="46bd37d6-5c53-48bb-a18e-99986a107439" />
+        <classShapeMoniker Id="64d6d0c2-0b57-4005-8ed0-9beabb3c6c17" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(1.75 : 5.5881982421875); (1.75 : 6.86620198567708); (3.25 : 6.86620198567708)]" fixedFrom="Algorithm" fixedTo="NotFixed">
+      <AssociationMoniker Name="/POSDataContext/TableSeat/TableSeat_OrderKassa" />
+      <nodes>
+        <classShapeMoniker Id="1cb854f2-5f28-42b8-a220-c84e8565c16e" />
+        <classShapeMoniker Id="46bd37d6-5c53-48bb-a18e-99986a107439" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>
